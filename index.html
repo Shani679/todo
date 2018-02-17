@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Vue js</title>
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"></script>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  	<link href="https://fonts.googleapis.com/css?family=Architects+Daughter" rel="stylesheet">
+</head>
+<body>
+	<div id="app">
+		<h1 class="text-center">My Todo List</h1>
+		<div id="todo-wrapper">
+			<div class="todo-actions">
+				<span v-on:click="clearCompleted">Clear completed</span>
+				<span v-on:click="clearAll">Clear All</span>
+				<span v-on:click="toggleDisplayCompleted" v-if="showAll">Hide completed</span>
+				<span v-on:click="toggleDisplayCompleted" v-if="!showAll">Show All</span>
+			</div>
+			<div id="addWrapper">
+				<input type="text" v-model="text" class="add-input" placeholder="I need to...">
+				<button v-on:click="addTodo" class="add-btn">+</button>
+			</div>
+			<transition name="fade">
+				<p v-if="error">Oops! You have write a todo</p>
+			</transition>
+			<ul>
+				<transition-group name="fade">
+					<li v-bind:class="{done: item.done}" v-for="(item, index) in list" v-bind:key="index" v-if="item.show" @dblclick = "item.edit = true">
+						<input type="checkbox" v-model="item.done" hidden="true">
+						<span class="checkbox-icon" v-if="item.done"><img src="http://vishalmaliwal.com/wp-content/uploads/2016/08/v-icon.png"></span>
+						<span v-if="!item.edit" v-on:click="item.done = !item.done" class="todo">{{item.todo}}</span>
+						<input type="text" v-if="item.edit" v-model="item.todo" v-on:blur="item.edit = false;" v-on:keyup.enter="item.edit = false;">
+						<span v-on:click="remove(index)" v-bind:id="index" class="delete">+</span>
+					</li>
+				</transition-group>
+			</ul>
+		</div>
+	</div>
+	<script type="text/javascript" src="script.js"></script>
+</body>
+</html>
